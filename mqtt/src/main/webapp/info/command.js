@@ -26,7 +26,7 @@ function getCommandInfo() {
         }else{
         	$.each(list, function(n, value) {
         		if(value.topic == sign_topic){
-        			$("#command_type").append("<option value='" + value.topic + "'>" + value.topic_msg + "</option>");
+        			$("#command_type").append("<option selected = 'selected'  value='" + value.topic + "'>" + value.topic_msg + "</option>");
         		}else{
         			$("#command_type").append("<option value='" + value.topic + "'>" + value.topic_msg + "</option>");
         		}
