@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport"
+	content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+<meta name="renderer" content="webkit">
+<title>设备连接信息</title>
+<link rel="stylesheet" href="css/pintuer.css">
+<link rel="stylesheet" href="css/admin.css">
+<script src="js/jquery.js"></script>
+<script src="js/pintuer.js"></script>
+<script src="info/equipmentInfo.js"></script>
+</head>
+<body>
+	<div class="panel admin-panel">
+		<div class="panel-head">
+			<strong><span class="icon-pencil-square-o"></span> 设备信息</strong>
+		</div>
+		<div class="padding border-bottom">
+			<ul class="search" style="padding-left: 10px;">
+				<li>搜索：</li>
+				<li><select id="connect_status_seclect" name="cid"
+					class="input" style="width: 200px; line-height: 17px;">
+						<option value="2">连接情况</option>
+						<option value="1">已连接</option>
+						<option value="0">未连接</option>
+				</select></li>
+				<li><input id="mac_scan" type="text" placeholder="请输入mac地址"
+					name="keywords" class="input"
+					style="width: 250px; line-height: 17px; display: inline-block" />
+					<a href="javascript:void(0)" class="button border-main icon-search"
+					onclick="changesearch()"> 搜索</a></li>
+			</ul>
+		</div>
+		<div class="body-content">
+			<table id="equipmentInfo" class="table table-hover text-center">
+				<thead>
+				<tr>
+					<th width="30%">mac地址</th>
+					<th width="20%">连接情况</th>
+				</tr>
+				</thead>
+				<tbody></tbody>
+				<tfoot></tfoot>
+			</table>
+		</div>
+	</div>
+</body>
+</html>

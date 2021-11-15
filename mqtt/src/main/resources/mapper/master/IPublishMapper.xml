@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.unionman.mqtt.dao.master.IPublishMapper">
+	
+	<!-- 发布的主题 -->
+	<resultMap id="publishTopicInfo" type="com.unionman.mqtt.data.PublishTopicData">
+		<result column="id" jdbcType="BIGINT" property="id" />
+        <result column="topic" jdbcType="VARCHAR" property="topic" />
+        <result column="topic_msg" jdbcType="VARCHAR" property="topic_msg" />
+    </resultMap>
+    
+    <!-- 获取发布的主题 -->
+    <select id="getPublishTopicInfo" resultMap="publishTopicInfo">
+    	select id, topic, topic_msg
+    	from dict_publish_topic_info 
+    	where 1=1
+    </select>
+	
+	<!-- mqtt连接的通用配置 -->
+	<resultMap id="mqttCommonInfo" type="com.unionman.mqtt.data.MqttCommonData">
+		<result column="broker" jdbcType="VARCHAR" property="broker" />
+        <result column="username" jdbcType="VARCHAR" property="username" />
+        <result column="password" jdbcType="VARCHAR" property="password" />
+        <result column="clientid" jdbcType="VARCHAR" property="clientid" />
+    </resultMap>
+    
+    <!-- 获取mqtt连接的通用配置 -->
+    <select id="getMqttCommonInfo" resultMap="mqttCommonInfo">
+    	select broker, username, password, clientid
+    	from dict_mqtt_comm_info 
+    	where 1=1
+    </select>
+</mapper>

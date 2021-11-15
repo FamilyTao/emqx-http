@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.unionman.mqtt.dao.master.IEquipmentMapper">
+
+	<!-- 检查设备是否注册 -->
+	<select id="checkEquipmentExist" parameterType="com.unionman.mqtt.data.EquipmentData" resultType="int">
+		select count(mac)
+    	from biz_equipment_info where 1=1 and mac=#{mac} 
+	</select>
+	
+	<!-- 保存设备信息 -->
+	<insert id="insertEquipmentInfo" parameterType ="com.unionman.mqtt.data.EquipmentData">
+		insert into biz_equipment_info(mac, connect_status) values (#{mac}, #{connect_status})
+	</insert>
+	
+	<!-- 设备信息 -->
+	<resultMap id="equipmentInfo" type="com.unionman.mqtt.data.EquipmentData">
+		<result column="mac" jdbcType="VARCHAR" property="mac" />
+        <result column="connect_status" jdbcType="INTEGER" property="connect_status" />
+    </resultMap>
+    
+    <!-- 获取设备信息 -->
+    <select id="getEquipmentInfo" parameterType="map" resultMap="equipmentInfo">
+    	select mac, connect_status
+    	from biz_equipment_info 
+    	where 1=1
+    	<if test="mac != null and mac != ''">
+    		and mac like concat('%',#{mac},'%')
+    	</if>
+    	<if test="connect_status != 2">
+    		and connect_status = #{connect_status}
+    	</if>
+    </select>
+    
+    <!-- 修改设备信息 -->
+    <update id="updateEquipmentInfo" parameterType="com.unionman.mqtt.data.EquipmentData">
+    	update biz_equipment_info
+    	set connect_status=#{connect_status}
+    	where mac=#{mac} 
+    </update>
+    
+    <!-- 获取所有mac -->
+    <select id="getAllMacInfo"  resultType="com.unionman.mqtt.data.EquipmentData">
+    	select mac, connect_status
+    	from biz_equipment_info 
+    	where 1=1 and connect_status=1
+    </select>
+    
+	<!-- 设备信息 -->
+	<resultMap id="deviceMacInfo" type="com.unionman.mqtt.data.DeviceMacData">
+		<result column="mac" jdbcType="VARCHAR" property="mac" />
+		<result column="device_mac" jdbcType="VARCHAR" property="device_mac" />
+        <result column="active" jdbcType="BOOLEAN" property="active" />
+    </resultMap>
+    
+    <!-- 获取下挂所有mac -->
+    <select id="getDeviceMacInfo" parameterType="map" resultMap="deviceMacInfo">
+    	select mac, device_mac, active
+    	from biz_device_mac_info 
+    	where 1=1 and mac=#{mac}
+    </select>
+    
+    <!-- 删除旧的下挂信息 -->
+    <delete id="deleteOldDeviceInfo" parameterType="string">
+    	delete from biz_device_mac_info 
+    	where mac=#{mac}
+    </delete>
+    	
+	<!-- 保存下挂信息 -->
+	<insert id="insertDeviceInfo" parameterType ="com.unionman.mqtt.data.DeviceMacData">
+		insert into biz_device_mac_info(mac, device_mac, active) values (#{mac}, #{device_mac}, #{active})
+	</insert>
+</mapper>

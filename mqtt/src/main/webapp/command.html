@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport"
+	content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+<meta name="renderer" content="webkit">
+<title></title>
+<link rel="stylesheet" href="css/pintuer.css">
+<link rel="stylesheet" href="css/admin.css">
+<script src="js/jquery.js"></script>
+<script src="js/pintuer.js"></script>
+<script src="info/command.js"></script>
+</head>
+<body>
+	<div class="panel admin-panel">
+		<div class="panel-head" id="add">
+			<strong><span class="icon-pencil-square-o"></span>命令信息</strong>
+		</div>
+		<div class="body-content">
+			<form class="form-x">
+				<div class="form-group">
+					<div class="label">
+						<label>命令主题：</label>
+					</div>
+					<div class="field">
+						<select name="cid" class="input w50" id="command_type"></select>
+					</div>
+				</div>
+
+				<div id="network_show" class="form-group" style="display: none">
+					<div class="label">
+						<label>重启网络类型：</label>
+					</div>
+					<div class="field">
+						<select name="cid" class="input w50" id="network_type">
+							<option value="0">0：表示all，所有操作项</option>
+							<option value="1">1：表示wan侧操作项</option>
+							<option value="2">2：表示lan侧操作项</option>
+							<option value="3">3：表示2.4G操作项</option>
+							<option value="4">4：表示5G操作项</option>
+						</select>
+					</div>
+				</div>
+				
+				<!-- 网络检测连通性-->
+				<div id="connect_show" class="form-group" style="display: none">
+					<div class="label">
+						<label>网络检测类型：</label>
+					</div>
+					<div class="field">
+						<select name="cid" class="input w50" id="network_type">
+							<option value="1">1：开始检测</option>
+							<option value="2">2：获取检测结果</option>
+						</select>
+					</div>
+				</div>
+				
+				
+				<div id="active_status" class="form-group" style="display: none">
+					<div class="label">
+						<label>active在线状态：</label>
+					</div>
+					<div class="field">
+						<select name="cid" class="input w50" id="qos_level">
+							<option value="0">0：离线</option>
+							<option value="1">1：在线</option>
+							<option value="2" selected disabled>2：全部</option>
+						</select>
+					</div>
+				</div>
+
+				<div class="form-group">
+					<div class="label">
+						<label>QoS等级：</label>
+					</div>
+					<div class="field">
+						<select name="cid" class="input w50" id="qos_level">
+							<option value="0">0：至多一次</option>
+							<option value="1" selected disabled>1：至少一次</option>
+							<option value="2">2：确保只有一次</option>
+						</select>
+					</div>
+				</div>
+
+				<div class="form-group">
+					<div class="label">
+						<label>指定接收对象：</label>
+					</div>
+					<div class="field">
+						<input type="text" class="input" id="macs" value=""
+							disabled="disabled" /> <input
+							onclick="getMacInfo()" type="button"
+							value="选择发送对象" />
+					</div>
+				</div>
+				<div class="form-group">
+					<div class="label">
+						<label></label>
+					</div>
+					<div class="field">
+						<button class="button bg-main icon-check-square-o" type="submit"
+							id="publish">提交</button>
+					</div>
+				</div>
+			</form>
+		</div>
+	</div>
+
+</body>
+</html>

@@ -1,0 +1,9 @@
+server:
+  port: 8080
+  mqtt:
+    url: tcp://192.168.13.5:1883
+
+spring:
+  thymeleaf:
+    cache: false
+
