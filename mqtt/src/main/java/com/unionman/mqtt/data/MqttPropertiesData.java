@@ -1,8 +1,5 @@
 package com.unionman.mqtt.data;
 
-import lombok.Data;
-
-@Data
 public class MqttPropertiesData {
 	
 	/**消息可能性:0:最多一次 1:最少一次 2:只有一次*/

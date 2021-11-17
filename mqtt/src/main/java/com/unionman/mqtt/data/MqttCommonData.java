@@ -1,8 +1,5 @@
 package com.unionman.mqtt.data;
 
-import lombok.Data;
-
-@Data
 public class MqttCommonData {
 	
 	/**mqtt安装的服务器地址*/

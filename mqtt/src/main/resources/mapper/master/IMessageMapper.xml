@@ -5,9 +5,9 @@
 	<!-- 保存设备发布的信息 -->
 	<insert id="insertMessageInfo" parameterType ="com.unionman.mqtt.data.PublishMessageData">
 		insert into biz_publish_message_info
-		(id, client_id, username, topic, qos, payload, receive_time) 
+		(id, client_id, username, topic, qos, payload, receive_time, request_id, timewait_status) 
 		values 
-		(#{id}, #{client_id}, #{username}, #{topic}, #{qos}, #{payload}, #{receive_time})
+		(#{id}, #{client_id}, #{username}, #{topic}, #{qos}, #{payload}, #{receive_time}, #{request_id}, #{timewait_status})
 	</insert>
 	
 	<!-- 设备发布的信息 -->
@@ -20,12 +20,15 @@
         <result column="qos" jdbcType="INTEGER" property="qos" />
         <result column="payload" jdbcType="VARCHAR" property="payload" />
         <result column="receive_time" jdbcType="VARCHAR" property="receive_time" />
+        <result column="timewait_status" jdbcType="INTEGER" property="timewait_status" />
+        <result column="request_id" jdbcType="VARCHAR" property="request_id" />
     </resultMap>
     
     <!-- 获取设备发布的信息 -->
     <select id="getPublishMessageInfo" parameterType="map" resultMap="publishMessageInfo">
     	select messageInfo.id, messageInfo.client_id, messageInfo.username, 
-    	messageInfo.topic, messageInfo.qos, messageInfo.payload, messageInfo.receive_time, topic_msg
+    	messageInfo.topic, messageInfo.qos, messageInfo.payload, messageInfo.receive_time, topic_msg, 
+    	messageInfo.request_id, messageInfo.timewait_status
     	from biz_publish_message_info messageInfo 
     	left join dict_publish_topic_info topicInfo on messageInfo.topic= topicInfo.topic
     	where 1=1
@@ -40,5 +43,17 @@
     	</if> 
     	order by messageInfo.receive_time desc
     </select>
-
+    
+    <!-- 获取设备发布的信息 -->
+    <select id="checkTimewaitMessageInfoExist" parameterType="String" resultType="int">
+    	select count(id)
+    	from biz_publish_message_info
+    	where 1=1
+    	and request_id=#{request_id} and timewait_status=1
+    </select>
+    
+    <delete id="deleteTimewaitMessageInfo" parameterType="String">
+    	delete from biz_publish_message_info
+    	where request_id=#{request_id} and timewait_status=1
+    </delete>
 </mapper>

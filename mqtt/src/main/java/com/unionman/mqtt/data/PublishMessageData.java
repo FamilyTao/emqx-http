@@ -1,8 +1,5 @@
 package com.unionman.mqtt.data;
 
-import lombok.Data;
-
-@Data
 public class PublishMessageData {
 	
 	/**主键id*/
@@ -28,6 +25,12 @@ public class PublishMessageData {
 	
 	/**内容*/
 	public String payload;
+	
+	/**请求编号*/
+	public String request_id;
+	
+	/**是否延迟处理*/
+	public int timewait_status;
 
 	public long getId() {
 		return id;
@@ -92,6 +95,20 @@ public class PublishMessageData {
 	public void setPayload(String payload) {
 		this.payload = payload;
 	}
-	
 
+	public String getRequest_id() {
+		return request_id;
+	}
+
+	public void setRequest_id(String request_id) {
+		this.request_id = request_id;
+	}
+
+	public int getTimewait_status() {
+		return timewait_status;
+	}
+
+	public void setTimewait_status(int timewait_status) {
+		this.timewait_status = timewait_status;
+	}
 }

@@ -49,35 +49,40 @@ function getPublishMessageInfo(publishMessage) {
                     trs += "<td> " + topic + " </td>";
                     trs += "<td> " + value.qos + " </td>";
                     trs += "<td> " + value.receive_time + " </td>";
-                    var payload = value.payload;
-                    if(topic == "um_diag_sys_baseinfo"){
-                    	trs += "<td><div class='button-group'> <a class='button border-main' href='javascript:void(0)' onclick='getPublishMessageDetailInfo(" + payload +", 1)'>详情</a></td></tr>";
-                    }else if(topic == "um_diag_detect_connect"){
-                    	trs += "<td><div class='button-group'> <a class='button border-main' href='javascript:void(0)' onclick='getPublishMessageDetailInfo(" + payload +", 2)'>详情</a></td></tr>";
-                    }else if(topic == "um_diag_network_quality"){
-                    	trs += "<td><div class='button-group'> <a class='button border-main' href='javascript:void(0)' onclick='getPublishMessageDetailInfo(" + payload +", 3)'>详情</a></td></tr>";
-                    }else if(topic == "um_diag_network_topology"){
-                    	trs += "<td><div class='button-group'> <a class='button border-main' href='javascript:void(0)' onclick='getPublishMessageDetailInfo(" + payload +", 4)'>详情</a></td></tr>";
-                    }else if(topic == "um_diag_network_restart"){
-                    	trs += "<td><div class='button-group'> <a class='button border-main' href='javascript:void(0)' onclick='getPublishMessageDetailInfo(" + payload +", 5)'>详情</a></td></tr>";
-                    }else if(topic == "um_mon_get_platform_static_info"){
-                    	trs += "<td><div class='button-group'> <a class='button border-main' href='javascript:void(0)' onclick='getPublishMessageDetailInfo(" + payload +", 6)'>详情</a></td></tr>";
-                    }else if(topic == "um_mon_get_platform_dynamic_info"){
-                    	trs += "<td><div class='button-group'> <a class='button border-main' href='javascript:void(0)' onclick='getPublishMessageDetailInfo(" + payload +", 7)'>详情</a></td></tr>";
-                    }else if(topic == "um_mon_get_wan_info"){
-                    	trs += "<td><div class='button-group'> <a class='button border-main' href='javascript:void(0)' onclick='getPublishMessageDetailInfo(" + payload +", 8)'>详情</a></td></tr>";
-                    }else if(topic == "um_mon_get_lan_info"){
-                    	trs += "<td><div class='button-group'> <a class='button border-main' href='javascript:void(0)' onclick='getPublishMessageDetailInfo(" + payload +", 9)'>详情</a></td></tr>";
-                    }else if(topic == "um_mon_get_wlan_radio_info"){
-                    	trs += "<td><div class='button-group'> <a class='button border-main' href='javascript:void(0)' onclick='getPublishMessageDetailInfo(" + payload +", 10)'>详情</a></td></tr>";
-                    }else if(topic == "um_mon_get_wlan_ssid_info"){
-                    	trs += "<td><div class='button-group'> <a class='button border-main' href='javascript:void(0)' onclick='getPublishMessageDetailInfo(" + payload +", 11)'>详情</a></td></tr>";
-                    }else if(topic == "um_mon_get_device_brief_info"){
-                    	trs += "<td><div class='button-group'> <a class='button border-main' href='javascript:void(0)' onclick='getPublishMessageDetailInfo(" + payload +", 12)'>详情</a></td></tr>";
-                    }else if(topic == "um_mon_get_device_detailed_info"){
-                    	trs += "<td><div class='button-group'> <a class='button border-main' href='javascript:void(0)' onclick='getPublishMessageDetailInfo(" + payload +", 13)'>详情</a></td></tr>";
+                    var timewait_status = value.timewait_status;
+                    if(timewait_status == 1){
+                    	trs += "<td><div class='button-group'> <a class='button border-main' href='#'>延迟处理</a></td></tr>";
                     }else{
-                    	trs += "<td> " + payload + " </td></tr>";
+                    	var payload = value.payload;
+	                    if(topic == "um_diag_sys_baseinfo"){
+	                    	trs += "<td><div class='button-group'> <a class='button border-main' href='javascript:void(0)' onclick='getPublishMessageDetailInfo(" + payload +", 1)'>详情</a></td></tr>";
+	                    }else if(topic == "um_diag_detect_connect"){
+	                    	trs += "<td><div class='button-group'> <a class='button border-main' href='javascript:void(0)' onclick='getPublishMessageDetailInfo(" + payload +", 2)'>详情</a></td></tr>";
+	                    }else if(topic == "um_diag_network_quality"){
+	                    	trs += "<td><div class='button-group'> <a class='button border-main' href='javascript:void(0)' onclick='getPublishMessageDetailInfo(" + payload +", 3)'>详情</a></td></tr>";
+	                    }else if(topic == "um_diag_network_topology"){
+	                    	trs += "<td><div class='button-group'> <a class='button border-main' href='javascript:void(0)' onclick='getPublishMessageDetailInfo(" + payload +", 4)'>详情</a></td></tr>";
+	                    }else if(topic == "um_diag_network_restart"){
+	                    	trs += "<td><div class='button-group'> <a class='button border-main' href='javascript:void(0)' onclick='getPublishMessageDetailInfo(" + payload +", 5)'>详情</a></td></tr>";
+	                    }else if(topic == "um_mon_get_platform_static_info"){
+	                    	trs += "<td><div class='button-group'> <a class='button border-main' href='javascript:void(0)' onclick='getPublishMessageDetailInfo(" + payload +", 6)'>详情</a></td></tr>";
+	                    }else if(topic == "um_mon_get_platform_dynamic_info"){
+	                    	trs += "<td><div class='button-group'> <a class='button border-main' href='javascript:void(0)' onclick='getPublishMessageDetailInfo(" + payload +", 7)'>详情</a></td></tr>";
+	                    }else if(topic == "um_mon_get_wan_info"){
+	                    	trs += "<td><div class='button-group'> <a class='button border-main' href='javascript:void(0)' onclick='getPublishMessageDetailInfo(" + payload +", 8)'>详情</a></td></tr>";
+	                    }else if(topic == "um_mon_get_lan_info"){
+	                    	trs += "<td><div class='button-group'> <a class='button border-main' href='javascript:void(0)' onclick='getPublishMessageDetailInfo(" + payload +", 9)'>详情</a></td></tr>";
+	                    }else if(topic == "um_mon_get_wlan_radio_info"){
+	                    	trs += "<td><div class='button-group'> <a class='button border-main' href='javascript:void(0)' onclick='getPublishMessageDetailInfo(" + payload +", 10)'>详情</a></td></tr>";
+	                    }else if(topic == "um_mon_get_wlan_ssid_info"){
+	                    	trs += "<td><div class='button-group'> <a class='button border-main' href='javascript:void(0)' onclick='getPublishMessageDetailInfo(" + payload +", 11)'>详情</a></td></tr>";
+	                    }else if(topic == "um_mon_get_device_brief_info"){
+	                    	trs += "<td><div class='button-group'> <a class='button border-main' href='javascript:void(0)' onclick='getPublishMessageDetailInfo(" + payload +", 12)'>详情</a></td></tr>";
+	                    }else if(topic == "um_mon_get_device_detailed_info"){
+	                    	trs += "<td><div class='button-group'> <a class='button border-main' href='javascript:void(0)' onclick='getPublishMessageDetailInfo(" + payload +", 13)'>详情</a></td></tr>";
+	                    }else{
+                    		trs += "<td> " + payload + " </td></tr>";
+                    	}
                     }
                     tbody += trs;
                 });

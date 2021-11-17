@@ -16,6 +16,7 @@ import com.unionman.mqtt.data.MqttPropertiesData;
 import com.unionman.mqtt.data.PublishTopicData;
 import com.unionman.mqtt.exception.UnionmanException;
 import com.unionman.mqtt.service.IPublishService;
+import com.unionman.mqtt.util.IdWorker;
 import com.unionman.mqtt.util.JsonUtil;
 import com.unionman.mqtt.util.MapUtil;
 import com.unionman.mqtt.util.MqttPubUtil;
@@ -95,6 +96,9 @@ public class PublishServiceImpl implements IPublishService {
 		int connect = MapUtil.getInt(params, "connect"); //网络检测
 		System.out.println("######connect: "+connect);
 		int active_status = MapUtil.getInt(params, "active_status"); //在线状态
+		int delay_status = MapUtil.getInt(params, "delay_status");
+		int period = MapUtil.getInt(params, "period");
+		int period_count = MapUtil.getInt(params, "period_count");
 		data.setPassWord(commonData.getPassword());
 		int qos = MapUtil.getInt(params, "qos");
 		data.setQos(qos);
@@ -103,11 +107,11 @@ public class PublishServiceImpl implements IPublishService {
 			String[] split = mac.split("/");
 			String topic = publishTopicInfo.replaceAll("mac", split[0]);
 			String device_mac = split[1];
-			data.setMsg(getMsg(sign_topic, network, active_status, device_mac,connect));
+			data.setMsg(getMsg(sign_topic, network, active_status, device_mac,connect, delay_status, period, period_count));
 			data.setTopic(topic);
 		}else {
 			String topic = publishTopicInfo.replaceAll("mac", mac);
-			data.setMsg(getMsg(sign_topic, network, active_status, null,connect));
+			data.setMsg(getMsg(sign_topic, network, active_status, null,connect, delay_status, period, period_count));
 			data.setTopic(topic);
 		}
 		data.setUserName(commonData.getUsername());
@@ -121,30 +125,58 @@ public class PublishServiceImpl implements IPublishService {
 	 * @param active_status 
 	 * @param device_mac 
 	 * @param connect
+	 * @param period_count 
+	 * @param period 
+	 * @param delay_status 
 	 * @return
 	 */
-	private String getMsg(String topic, int network, int active_status, String device_mac,int connect) {
+	private String getMsg(String topic, int network, int active_status, String device_mac,int connect, int delay_status, int period, int period_count) {
 		JSONObject json = new JSONObject();
 		json.put("request", topic);
 		if(topic.equals(ConditionConst.topic_network_restart)) { //判断是否是网络重启,设置参数
-			JSONObject parameter = new JSONObject();
+			JSONObject parameter = getCommonInfo(delay_status, period, period_count);
 			parameter.put("request_id", network);
 			json.put("parameter", parameter);
 		}else if(topic.equals(ConditionConst.topic_get_device_brief_info)) { //是获取网络简略信息,设置参数
-			JSONObject parameter = new JSONObject();
+			JSONObject parameter = getCommonInfo(delay_status, period, period_count);
 			parameter.put("active", active_status);
 			json.put("parameter", parameter);
 		}else if(topic.equals(ConditionConst.topic_get_device_detailed_info)) { //获取网络详细信息,设置参数
-			JSONObject parameter = new JSONObject();
+			JSONObject parameter = getCommonInfo(delay_status, period, period_count);
 			String[] split = device_mac.split("#");
 			parameter.put("mac", split);
 			json.put("parameter", parameter);
 		}else if(topic.equals(ConditionConst.topic_get_diag_detect_connect)) { //检测网络连通性,设置参数
-			JSONObject parameter =new JSONObject();
+			JSONObject parameter = getCommonInfo(delay_status, period, period_count);
 			parameter.put("request_id", connect);
+			json.put("parameter", parameter);
+		}else {
+			JSONObject parameter = getCommonInfo(delay_status, period, period_count);
 			json.put("parameter", parameter);
 		}
 		return json.toString();
+	}
+
+	private JSONObject getCommonInfo(int delay_status, int period, int period_count) {
+		JSONObject info = new JSONObject();
+		if(delay_status == 0) {
+			info.put("timewait", false);
+		}else {
+			info.put("timewait", true);
+		}
+		if(period != 0) {
+			info.put("periodicity", getPeriodicity(period, period_count));
+		}
+		IdWorker id = new IdWorker();
+		info.put("request_id", id.nextId());
+		return info;
+	}
+
+	private JSONObject getPeriodicity(int period, int period_count) {
+		JSONObject info = new JSONObject();
+		info.put("period", period);
+		info.put("count", period_count);
+		return info;
 	}
 
 }

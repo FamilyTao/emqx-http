@@ -57,11 +57,24 @@ public class MessageServiceImpl implements IMessageService {
 				JSONObject msgInfo = decode.getJSONObject(0);
 				JSONObject topicInfo = decode.getJSONObject(1);
 				if(msgInfo.containsKey("code")) {
+					String request_id = topicInfo.getString("request_id");
+					int status = 0;
+					if(topicInfo.containsKey("timewait")) {
+						boolean timewait = topicInfo.getBoolean("timewait");
+						if(timewait) {
+							status = 1;
+						}else {
+							int size = mapper.checkTimewaitMessageInfoExist(request_id);
+							if(size > 0) {
+								mapper.deleteTimewaitMessageInfo(request_id);
+							}
+						}
+					}
 					String sign_topic = topicInfo.getString("type");
 					if(sign_topic.equals(ConditionConst.topic_get_device_brief_info)) {
 						saveDeviceInfo(params, msgInfo);
 					}
-					PublishMessageData data = getPublishMessageData(params, sign_topic, msgInfo);
+					PublishMessageData data = getPublishMessageData(params, sign_topic, msgInfo, request_id, status);
 					mapper.insertMessageInfo(data);
 				}
 			}
@@ -91,7 +104,7 @@ public class MessageServiceImpl implements IMessageService {
 		}
 	}
 
-	private PublishMessageData getPublishMessageData(Map<String, Object> params, String sign_topic, JSONObject msgInfo) {
+	private PublishMessageData getPublishMessageData(Map<String, Object> params, String sign_topic, JSONObject msgInfo, String request_id, int status) {
 		IdWorker id= new IdWorker();
 		PublishMessageData data = new PublishMessageData();
 		data.setClient_id(MapUtil.getString(params, "from_client_id"));
@@ -99,6 +112,8 @@ public class MessageServiceImpl implements IMessageService {
 		data.setPayload(msgInfo.toString());
 		data.setQos(MapUtil.getInt(params, "qos"));
 		data.setTopic(sign_topic);
+		data.setTimewait_status(status);
+		data.setRequest_id(request_id);
 		data.setUsername(MapUtil.getString(params, "from_username"));
 		data.setReceive_time(DateUtil.getDateFormatyyyyMMddHHmmss());
 		return data;

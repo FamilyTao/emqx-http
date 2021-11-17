@@ -78,6 +78,9 @@ $(function() {
         var connect = $("#connect_show option:selected").val();
         var active_status = $("#active_status option:selected").val();
         var qos = $("#qos_level option:selected").val();
+        var delay_status = $("#delay_status option:selected").val();
+        var period = $('#period').val();
+        var period_count = $('#period_count').val();
         var macs = $('#macs').val();
         if (isEmpty(macs)) {
     		alert("发送对象不能为空");
@@ -89,6 +92,9 @@ $(function() {
             "conncet": connect,
             "qos": qos,
             "active_status": active_status,
+            "delay_status": delay_status,
+            "period": period,
+            "period_count": period_count,
             "macs": macs
         }
         publishTopic(publishInfo);
